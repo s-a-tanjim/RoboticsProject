@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test</title>
+</head>
+
+<body>
+  
+    <input id="inputID" onkeydown="pressed(event)" onkeypress="enterPress()">
+    <button onclick="clear()">Here</button>
+  
+  <div id="output"></div>
+  <div id="output2"></div>
+
+  <input id='servo-1' type='range' min='1' max='180' step='1' value='90' class='servo-slider'></input>
+  <div id="output3"></div>
+  
+  <script>
+    var output = document.getElementById('output');
+    var inputID = document.getElementById('inputID');
+
+    var servo = document.getElementById('servo-1'); 
+
+    servo.onchange = function(){
+      document.getElementById('output3').innerHTML=servo.value;
+    }
+
+    function pressed(event) {
+      var x = event.which || event.keyCode || "None";
+      //x= event.key;
+      x = inputID.value.charCodeAt(0);
+      output.innerHTML = x;
+      inputID.value='';
+      
+      //document.getElementById('formID').reset();
+    }
+    function enterPress(){
+      document.getElementById('output2').innerHTML="ENter";
+    }
+
+    function clear(){
+      document.getElementById('inputID').value='';
+      document.getElementById('inputID').innerHTML='';
+    }
+  </script>
+</body>
+
+</html>
