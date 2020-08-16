@@ -27,6 +27,10 @@ void breaks()
 {
   car_status=false;
   digitalWrite(motorEnablePin,LOW);
+  analogWrite(rpf,0);
+  analogWrite(rpr,0);
+  analogWrite(lpf,0);
+  analogWrite(lpr,0);
 }
 void tright()
 {

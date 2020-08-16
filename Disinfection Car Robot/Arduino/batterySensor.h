@@ -8,7 +8,8 @@ float R2 = 7500.0;
 
 void getBatteryData(){
   val = analogRead(batterySensorPin);
-  vOUT = (val * 5.0) / 1024.0;
+  //vOUT = (val * 5.0) / 1024.0;
+  vOUT = (val * 5.0) / 930;
   vIN = vOUT / (R2/(R1+R2));
   batteryValueParcent=(float)((vIN-LOWEST_BATTERY)*100)/(HIGHEST_BATTERY-LOWEST_BATTERY);
   if(batteryValueParcent>100) batteryValueParcent=100;

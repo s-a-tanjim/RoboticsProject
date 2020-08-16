@@ -19,8 +19,8 @@
 String currentTxRxVal="Null";
 String responseData = "*0^0^0*"; 
 bool uvc_status = false,car_status=false;
-//boolean canGoForward = false, canGoBackward = false;
-boolean canGoForward = true, canGoBackward = true;
+boolean canGoForward = false, canGoBackward = false, superUserMode = false;
+//boolean canGoForward = true, canGoBackward = true;
 String batteryData="000";
 
 #include "carControl.h"
@@ -44,16 +44,11 @@ void setup() {
   Serial2.begin(9600);
   delay(10);
 
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
-
   WiFi.begin(ssid,password);
   while(WiFi.status()!=WL_CONNECTED)
   {
-    Serial.print(".");
     delay(200);
   }
-  Serial.println(" Connected");
 
   server.on("/",HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(200, "text/html", htmlData);
@@ -63,12 +58,9 @@ void setup() {
   server.on("/left",HTTP_GET,Left_handle);
   server.on("/right",HTTP_GET,Right_handle);
   server.on("/stop",HTTP_GET,Stop_handle);
+  server.on("/supermode",HTTP_GET,Super_Mode_handle);
 
   server.begin();
-  Serial.println("Server Connected!");
-  Serial.print("Use this IP to connect:"); 
-  Serial.print(WiFi.localIP());  
-  Serial.println("Web server started!");
 
   pinMode(UVC_Pin,OUTPUT);
   pinMode(motorEnablePin,OUTPUT);
@@ -84,9 +76,9 @@ void loop() {
   if(WiFi.status()==WL_CONNECTED){
     digitalWrite(wifiIndicatorPin,HIGH);
     readTxRxData();
-    if(currentDirection=='w' && !canGoForward){
+    if(currentDirection=='w' && !canGoForward && !superUserMode){
       breaks(); //break car
-    } else if (currentDirection=='s' && !canGoBackward){
+    } else if (currentDirection=='s' && !canGoBackward && !superUserMode){
       breaks(); //break car
     }
     if(uvc_status){
