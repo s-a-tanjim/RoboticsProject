@@ -1,5 +1,5 @@
 void uvcControl(String data){
-  Serial.println(data);
+  //Serial.println(data);
   if(data=="1"){
     uvc_status = true;
   } else {
@@ -8,7 +8,7 @@ void uvcControl(String data){
 }
 
 void stopALL(){
-  digitalWrite(UVC_Pin,HIGH); //Off UVC
+  digitalWrite(UVC_Pin,LOW); //Off UVC
   breaks(); //Break Car
 }
 
@@ -36,8 +36,8 @@ void readTxRxData(){
     }
     
     currentTxRxVal = x;
-    Serial.print("String: "); // *00^100*
-    Serial.println(x);
+    //Serial.print("String: "); // *00^100*
+    //Serial.println(x);
 
     int i=0;
     while(x.length()>i && x[i]!='*'){
@@ -67,8 +67,8 @@ void readTxRxData(){
         }
       }
     }
-   Serial.print("Battery :");
-   Serial.println(batteryData);
+   //Serial.print("Battery :");
+   //Serial.println(batteryData);
   } else {
     digitalWrite(txrxIndicatorPin,LOW);
   }

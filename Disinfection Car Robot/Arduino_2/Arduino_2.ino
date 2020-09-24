@@ -17,7 +17,7 @@
 #define obstacleIndicatorPin 30
 
 #define MAX_DIST 250 //cm
-#define MIN_DIST 60 //cm
+#define MIN_DIST 42 //cm
 
 String sendingData,prevData="Null";
 char sendingDataArr[10];

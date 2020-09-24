@@ -118,9 +118,9 @@
       </label>
     </div>
     <div class='section'>
-      <h3>Advanced Mode</h3>
+      <h3>Protected Mode</h3>
       <label class='switch' style='margin-left: 10px;'>
-        <input onclick='advanced_mode_switch()' id='advanced_mode_switch_id' type='checkbox'>
+        <input onclick='protected_mode_switch()' id='protected_mode_switch_id' type='checkbox'>
         <span class='slider round'></span>
       </label>
     </div>
@@ -136,7 +136,7 @@
     var pwmVal = 100;
     var currentDirection = 'stop';
     var canSendFlag = true;
-    var superUserMode = false;
+    var protectedMode = false;
 
     function car_input_change(event) {
       var x = event.which || event.keyCode;
@@ -181,7 +181,14 @@
     function sendData(direction) {
       if(canSendFlag) {
       canSendFlag=false;
-      var url = '/'+direction+'?pwm='+pwmVal+'&uvl='+UVSwitchFlag;   
+      var url = '/'+direction+'?pwm='+pwmVal+'&uvl='+UVSwitchFlag;
+      if(direction=='protectedmode'){
+        url+='&mode=';
+        if(protectedMode)
+          url+='1';
+        else
+          url+='0';
+      }
       currentDirection = direction; 
       /*console.log(url);*/
       fetch(url)
@@ -194,11 +201,11 @@
      }
     }
 
-    function advanced_mode_switch() {
-      if (document.getElementById('advanced_mode_switch_id').checked)
-         superUserMode = 1;
-      else superUserMode = 0;
-    sendData('supermode');
+    function protected_mode_switch() {
+      if (document.getElementById('protected_mode_switch_id').checked)
+         protectedMode = true;
+      else protectedMode = false;
+    sendData('protectedmode');
     }
 
     function uv_switch() {

@@ -1,8 +1,8 @@
 void printData(String pwm_val,String uv_status){
-  Serial.print("PWM : "); // pwm
-  Serial.println(pwm_val);
-  Serial.print("UVL: "); // uvl
-  Serial.println(uv_status);
+  //Serial.print("PWM : "); // pwm
+  //Serial.println(pwm_val);
+  //Serial.print("UVL: "); // uvl
+  //Serial.println(uv_status);
 }
 
 void commonHandler(char Direction,String pwm_val,String uv_status){
@@ -10,12 +10,12 @@ void commonHandler(char Direction,String pwm_val,String uv_status){
   uvcControl(uv_status);
   if(Direction!='w' && Direction!='s')
     driveCar(Direction,pwm_val);
-  else if((Direction=='w' && canGoForward) || (Direction=='s' && canGoBackward) || superUserMode)
+  else if((Direction=='w' && canGoForward) || (Direction=='s' && canGoBackward) || !protectedMode)
     driveCar(Direction,pwm_val);
 }
 
 void Forward_handle(AsyncWebServerRequest *request){
-   request->send(200, "text/plain", currentTxRxVal);
+   request->send(200, "text/plain", responseData);
    if (request->hasParam("pwm") && request->hasParam("uvl")){
       commonHandler('w',request->getParam("pwm")->value(),request->getParam("uvl")->value());
    }
@@ -49,11 +49,14 @@ void Right_handle(AsyncWebServerRequest *request){
   }
 }
 
-void Super_Mode_handle(AsyncWebServerRequest *request){
+void Protected_Mode_handle(AsyncWebServerRequest *request){
   request->send(200, "text/plain", responseData);
-  superUserMode = !superUserMode;
   if (request->hasParam("pwm") && request->hasParam("uvl")){
     commonHandler('e',request->getParam("pwm")->value(),request->getParam("uvl")->value());
   }
+  if(request->hasParam("mode") && request->getParam("mode")->value()=="1"){
+    protectedMode = true;
+  } else {
+    protectedMode = false;
+  }
 }
-

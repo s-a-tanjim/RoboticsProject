@@ -70,6 +70,12 @@ int parsePWM(String x){
 
 void driveCar(char Direction,String PWM){
   motorPWM = parsePWM(PWM);
+  if(motorPWM>90) 
+    motorPWM=90;
+  if(currentDirection!=Direction) {
+    breaks();
+    delay(350);
+  }
   currentDirection = Direction;
   if(Direction=='w'){
     forward();
